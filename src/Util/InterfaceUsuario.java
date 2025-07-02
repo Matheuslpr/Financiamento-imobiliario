@@ -1,10 +1,14 @@
 package Util;
-
-
 import java.util.Scanner;
 
 public class InterfaceUsuario  {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    //construtor
+
+    public InterfaceUsuario() {
+        this.scanner = new Scanner(System.in);
+    }
 
    //metodo
     public double pedirValorImovel() {
@@ -52,4 +56,26 @@ public class InterfaceUsuario  {
         } while (taxa < 0 || taxa > 20.0);
         return taxa;
     }
+
+    public String pedirTipoFinanciamento() {
+        scanner.nextLine();
+
+        String tipo;
+        while (true) {
+            System.out.print("Qual o tipo de imóvel? (casa / apartamento / terreno): ");
+            tipo = scanner.nextLine().toLowerCase().trim();
+
+            if (tipo.equals("casa") || tipo.equals("apartamento") || tipo.equals("terreno")) {
+                return tipo;
+            }
+
+            System.out.println("Tipo inválido. Por favor, escolha uma das opções.");
+        }
+    }
+
+    public void fecharScanner() {
+        scanner.close();
+    }
+
+
 }
