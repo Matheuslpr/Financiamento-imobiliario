@@ -7,14 +7,14 @@ import Modelo.Terreno;
 import Util.AumentoMaiorDoQueJurosException;
 import Util.InterfaceUsuario;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws AumentoMaiorDoQueJurosException {
+    public static void main(String[] args) {
         InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
         ArrayList<Financiamento> listaDeFinanciamentos = new ArrayList<>();
-
 
         System.out.print("Quantos financiamentos você deseja cadastrar? ");
         int numeroDeFinanciamentos = new java.util.Scanner(System.in).nextInt();
@@ -29,9 +29,7 @@ public class Main {
 
             // Pergunta o tipo de imóvel
             String tipoImovel = interfaceUsuario.pedirTipoFinanciamento();
-
             Financiamento financiamento = null;
-
 
             switch (tipoImovel) {
                 case "casa":
@@ -61,16 +59,20 @@ public class Main {
             }
         }
 
-        // Exibição dos resultados
+        // resultados
         double totalValorImoveis = 0;
         double totalFinanciamentos = 0;
         int contador = 1;
 
         System.out.println("\n\n------ Lista de Todos os Financiamentos ------");
         for (Financiamento f : listaDeFinanciamentos) {
-            f.dadosFinanciamento();
-            totalValorImoveis += f.getValorImovel();
-            totalFinanciamentos += f.calcularTotalPagamento();
+            try {
+                f.dadosFinanciamento();
+                totalValorImoveis += f.getValorImovel();
+                totalFinanciamentos += f.calcularTotalPagamento();
+            } catch (AumentoMaiorDoQueJurosException e) {
+                System.err.println("Erro ao processar financiamento: " + e.getMessage());
+            }
         }
 
         System.out.println("---------------------------------------");
@@ -78,7 +80,72 @@ public class Main {
         System.out.printf("Valor total de todos os financiamentos a pagar: R$ %.2f%n", totalFinanciamentos);
         System.out.println("---------------------------------------");
 
+        //salvar e ler
+        salvarFinanciamentosEmTexto(listaDeFinanciamentos, "financiamentos.txt");
+        lerFinanciamentosDeTexto("financiamentos.txt");
+
+        salvarFinanciamentosSerializados(listaDeFinanciamentos, "financiamentos.ser");
+        lerFinanciamentosSerializados("financiamentos.ser");
 
         interfaceUsuario.fecharScanner();
+    }
+
+    public static void salvarFinanciamentosEmTexto(ArrayList<Financiamento> financiamentos, String nomeArquivo) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo))) {
+            for (Financiamento f : financiamentos) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(f.getValorImovel()).append(",");
+                sb.append(f.getPrazoFinanciamento()).append(",");
+                sb.append(f.getTaxaJurosAnual()).append(",");
+
+                if (f instanceof Casa) {
+                    Casa casa = (Casa) f;
+                    sb.append("Casa,").append(casa.getAreaConstruida()).append(",").append(casa.getAreaTerreno());
+                } else if (f instanceof Apartamento) {
+                    Apartamento apto = (Apartamento) f;
+                    sb.append("Apartamento,").append(apto.getVagasGaragem()).append(",").append(apto.getAndares());
+                } else if (f instanceof Terreno) {
+                    Terreno terreno = (Terreno) f;
+                    sb.append("Terreno,").append(terreno.getTipoDeZona());
+                }
+                writer.println(sb.toString());
+            }
+            System.out.println("Dados dos financiamentos salvos em " + nomeArquivo);
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar financiamentos em texto: " + e.getMessage());
+        }
+    }
+
+    public static void lerFinanciamentosDeTexto(String nomeArquivo) {
+        System.out.println("\nLendo dados de financiamentos de " + nomeArquivo + ":");
+        try (Scanner scanner = new Scanner(new File(nomeArquivo))) {
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler financiamentos de texto: " + e.getMessage());
+        }
+    }
+
+    public static void salvarFinanciamentosSerializados(ArrayList<Financiamento> financiamentos, String nomeArquivo) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
+            oos.writeObject(financiamentos);
+            System.out.println("Dados dos financiamentos serializados e salvos em " + nomeArquivo);
+        } catch (IOException e) {
+            System.err.println("Erro ao serializar financiamentos: " + e.getMessage());
+        }
+    }
+
+    public static void lerFinanciamentosSerializados(String nomeArquivo) {
+        System.out.println("\nLendo dados de financiamentos serializados de " + nomeArquivo + ":");
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
+            ArrayList<Financiamento> financiamentosLidos = (ArrayList<Financiamento>) ois.readObject();
+            System.out.println("Financiamentos lidos (serializados): ");
+            for (Financiamento f : financiamentosLidos) {
+                System.out.println(f.toString());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro ao deserializar financiamentos: " + e.getMessage());
+        }
     }
 }

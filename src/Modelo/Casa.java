@@ -1,11 +1,12 @@
 package Modelo;
-import Util.AumentoMaiorDoQueJurosException;
 
+import Util.AumentoMaiorDoQueJurosException;
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Casa extends Financiamento{
-    Scanner scanner = new Scanner(System.in);
+public class Casa extends Financiamento implements Serializable {
+    transient Scanner scanner = new Scanner(System.in);
 
     //Atributos
     private double areaConstruida;
@@ -19,6 +20,7 @@ public class Casa extends Financiamento{
         this.areaConstruida = areaConstruida;
         this.areaTerreno = areaTerreno;
     }
+
     //Getters and Setters
     public double getAreaConstruida() {
         return areaConstruida;
@@ -106,6 +108,17 @@ public class Casa extends Financiamento{
         }
         System.out.println("Valor total a pagar: " + calcularTotalPagamento());
         System.out.println("---------------------------------------");
+    }
+
+    @Override
+    public String toString() {
+        return "Casa{" +
+                "valorImovel=" + valorImovel +
+                ", prazoFinanciamento=" + prazoFinanciamento +
+                ", taxaJurosAnual=" + taxaJurosAnual +
+                ", areaConstruida=" + areaConstruida +
+                ", areaTerreno=" + areaTerreno +
+                "}";
     }
 
 }

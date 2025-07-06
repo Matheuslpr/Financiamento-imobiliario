@@ -1,11 +1,11 @@
 package Modelo;
 
 import Util.AumentoMaiorDoQueJurosException;
-
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Terreno extends Financiamento{
-    Scanner scanner = new Scanner(System.in);
+public class Terreno extends Financiamento implements Serializable{
+    transient Scanner scanner = new Scanner(System.in);
 
     //Atributos
     private String tipoDeZona;
@@ -17,8 +17,8 @@ public class Terreno extends Financiamento{
         super(valorImovel, prazoFinanciamento, taxaJurosAnual);
         this.tipoDeZona = tipoDeZona;
     }
-    //Getters e setters
 
+    //Getter e setter
     public String getTipoDeZona() {
         return tipoDeZona;
     }
@@ -75,5 +75,14 @@ public class Terreno extends Financiamento{
             System.out.println(e.getMessage());
         }
         System.out.println("---------------------------------------");
+    }
+    @Override
+    public String toString() {
+        return "Terreno{" +
+                "valorImovel=" + valorImovel +
+                ", prazoFinanciamento=" + prazoFinanciamento +
+                ", taxaJurosAnual=" + taxaJurosAnual +
+                ", tipoDeZona='" + tipoDeZona + '\'' +
+                "}";
     }
 }

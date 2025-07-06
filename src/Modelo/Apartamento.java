@@ -1,12 +1,12 @@
 package Modelo;
 
 import Util.AumentoMaiorDoQueJurosException;
-
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Apartamento extends Financiamento{
-    Scanner scanner = new Scanner(System.in);
+public class Apartamento extends Financiamento implements Serializable{
+    transient Scanner scanner = new Scanner(System.in);
 
     //Atributos
     private int vagasGaragem;
@@ -40,7 +40,6 @@ public class Apartamento extends Financiamento{
     }
 
     //Metodos
-
     @Override
     public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         double taxaMensal = this.taxaJurosAnual / 12;
@@ -107,6 +106,15 @@ public class Apartamento extends Financiamento{
         System.out.println("---------------------------------------");
     }
 
-
+    @Override
+    public String toString() {
+        return "Apartamento{" +
+                "valorImovel=" + valorImovel +
+                ", prazoFinanciamento=" + prazoFinanciamento +
+                ", taxaJurosAnual=" + taxaJurosAnual +
+                ", vagasGaragem=" + vagasGaragem +
+                ", andares=" + andares +
+                "}";
+    }
 }
 

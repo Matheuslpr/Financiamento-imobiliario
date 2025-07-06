@@ -1,8 +1,9 @@
 package Modelo;
 
 import Util.AumentoMaiorDoQueJurosException;
+import java.io.Serializable;
 
-public abstract class Financiamento {
+public abstract class Financiamento implements Serializable {
 
     // atributos
     protected double valorImovel;
