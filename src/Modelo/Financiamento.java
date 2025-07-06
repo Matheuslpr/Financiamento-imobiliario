@@ -1,5 +1,7 @@
 package Modelo;
 
+import Util.AumentoMaiorDoQueJurosException;
+
 public abstract class Financiamento {
 
     // atributos
@@ -43,19 +45,29 @@ public abstract class Financiamento {
     }
 
     //metodos
-    public double calcularPagamentoMensal() {
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException, AumentoMaiorDoQueJurosException {
         return (this.valorImovel / (this.prazoFinanciamento * 12)) * (1 +(this.taxaJurosAnual / 12));
     }
 
-    public double calcularTotalPagamento() {
-        return this.calcularPagamentoMensal() * this.prazoFinanciamento * 12;
+
+    public double calcularTotalPagamento() throws AumentoMaiorDoQueJurosException {
+        try {
+            return this.calcularPagamentoMensal() * this.prazoFinanciamento * 12;
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
     }
 
-    public void dadosFinanciamento(){
+    public void dadosFinanciamento() throws AumentoMaiorDoQueJurosException {
         System.out.println("Valor do Imovel: " + valorImovel);
         System.out.println("Prazo do financiamento: " + prazoFinanciamento);
         System.out.println("Taxa de juros anual: " + taxaJurosAnual);
-        System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
+        try {
+            System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("Valor total a pagar: " + calcularTotalPagamento());
     }
 

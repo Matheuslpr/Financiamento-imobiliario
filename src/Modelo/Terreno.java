@@ -1,5 +1,7 @@
 package Modelo;
 
+import Util.AumentoMaiorDoQueJurosException;
+
 import java.util.Scanner;
 
 public class Terreno extends Financiamento{
@@ -28,15 +30,13 @@ public class Terreno extends Financiamento{
 
 
     //Metodos
-
-    //perguntar se é residencial ou comercial a zona
     @Override
-    public double calcularPagamentoMensal() {
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         return super.calcularPagamentoMensal() * 1.02;
     }
 
     @Override
-    public double calcularTotalPagamento() {
+    public double calcularTotalPagamento() throws AumentoMaiorDoQueJurosException {
 
         return this.calcularPagamentoMensal() * this.prazoFinanciamento * 12;
     }
@@ -44,8 +44,6 @@ public class Terreno extends Financiamento{
     public void definirTipoDeZona() {
         Scanner scanner = new Scanner(System.in);
         String resposta;
-
-        // Loop para garantir que a entrada seja válida
         while (true) {
             System.out.print("O terreno está em zona (residencial / comercial)? ");
             resposta = scanner.nextLine().toLowerCase().trim();
@@ -66,8 +64,16 @@ public class Terreno extends Financiamento{
         System.out.println("Tipo da Zona do Terreno: "+ tipoDeZona);
         System.out.println("Prazo do financiamento: " + prazoFinanciamento);
         System.out.println("Taxa de juros anual: " + taxaJurosAnual);
-        System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
-        System.out.println("Valor total a pagar: " + calcularTotalPagamento());
+        try {
+            System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Valor total a pagar: " + calcularTotalPagamento());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("---------------------------------------");
     }
 }

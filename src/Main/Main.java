@@ -4,12 +4,14 @@ import Modelo.Apartamento;
 import Modelo.Casa;
 import Modelo.Financiamento;
 import Modelo.Terreno;
+import Util.AumentoMaiorDoQueJurosException;
 import Util.InterfaceUsuario;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AumentoMaiorDoQueJurosException {
         InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
         ArrayList<Financiamento> listaDeFinanciamentos = new ArrayList<>();
 

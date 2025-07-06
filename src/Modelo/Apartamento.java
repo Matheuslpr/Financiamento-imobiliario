@@ -1,5 +1,8 @@
 package Modelo;
 
+import Util.AumentoMaiorDoQueJurosException;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Apartamento extends Financiamento{
@@ -39,7 +42,7 @@ public class Apartamento extends Financiamento{
     //Metodos
 
     @Override
-    public double calcularPagamentoMensal() {
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         double taxaMensal = this.taxaJurosAnual / 12;
 
         int meses = this.prazoFinanciamento * 12;
@@ -48,14 +51,41 @@ public class Apartamento extends Financiamento{
     }
 
     public void pedirDadosApartamento() {
-        Scanner scanner = new Scanner(System.in);
+        boolean entradaValida = false;
+        do {
+            try {
+                System.out.print("Por favor, insira a quantidade de vagas de garagem: ");
+                int vagas = scanner.nextInt();
+                if (vagas >= 0) {
+                    this.setVagasGaragem(vagas);
+                    entradaValida = true;
+                } else {
+                    System.out.println("Número de vagas inválido. Deve ser um valor que não seja negativo.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, digite um número inteiro para as vagas de garagem.");
+                scanner.next();
+            }
+        } while (!entradaValida);
 
-        System.out.print("Por favor, insira a quantidade de vagas de garagem: ");
-        this.setVagasGaragem(scanner.nextInt());
-
-        System.out.print("Por favor, insira o número de andares: ");
-        this.setAndares(scanner.nextInt());
+        entradaValida = false;
+        do {
+            try {
+                System.out.print("Por favor, insira o número de andares: ");
+                int andares = scanner.nextInt();
+                if (andares >= 0) {
+                    this.setAndares(andares);
+                    entradaValida = true;
+                } else {
+                    System.out.println("Número de andares inválido. Deve ser um valor que não seja negativo.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, digite um número inteiro para o número de andares.");
+                scanner.next();
+            }
+        } while (!entradaValida);
     }
+
     @Override
     public void dadosFinanciamento(){
         System.out.println("---------------------------------------");
@@ -64,8 +94,16 @@ public class Apartamento extends Financiamento{
         System.out.println("Numero de andares: " + andares );
         System.out.println("Prazo do financiamento: " + prazoFinanciamento);
         System.out.println("Taxa de juros anual: " + taxaJurosAnual);
-        System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
-        System.out.println("Valor total a pagar: " + calcularTotalPagamento());
+        try {
+            System.out.println("Valor do pagamento mensal: " + calcularPagamentoMensal());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("Valor total a pagar: " + calcularTotalPagamento());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("---------------------------------------");
     }
 
