@@ -46,7 +46,7 @@ public abstract class Financiamento implements Serializable {
     }
 
     //metodos
-    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException, AumentoMaiorDoQueJurosException {
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         return (this.valorImovel / (this.prazoFinanciamento * 12)) * (1 +(this.taxaJurosAnual / 12));
     }
 

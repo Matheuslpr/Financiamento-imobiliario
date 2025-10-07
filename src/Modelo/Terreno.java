@@ -52,7 +52,7 @@ public class Terreno extends Financiamento implements Serializable{
                 this.setTipoDeZona(resposta);
                 break;
             } else {
-                System.out.println("Entrada inválida. Por favor, digite 'residencial' ou 'comercial'.");
+                System.out.println("Por favor, digite 'residencial' ou 'comercial'.");
             }
         }
 

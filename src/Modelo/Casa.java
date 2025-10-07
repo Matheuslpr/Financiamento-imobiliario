@@ -49,10 +49,10 @@ public class Casa extends Financiamento implements Serializable {
         if (80 > (jurosMensal / 2)) {
 
             double novoAcrescimo = jurosMensal / 2;
-            System.out.println("Acréscimo de juros original foi ajustado");
+            System.out.println("Aviso: O acréscimo de juros foi ajustado para " + novoAcrescimo +
+                    " (50% do juro mensal calculado), pois o valor original excedia o limite permitido.");
             return pagamentoMensal + novoAcrescimo;
         }
-
         return pagamentoMensal + 80;
     }
 
@@ -68,7 +68,7 @@ public class Casa extends Financiamento implements Serializable {
                     this.setAreaConstruida(areaConstruidaInput);
                     entradaValida = true;
                 } else {
-                    System.out.println("Área construída inválida. Deve ser um valor maior que zero.");
+                    System.out.println("Área construída inválida. Por favor, Digite um valor maior que zero.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Por favor, digite um número para a área construída.");

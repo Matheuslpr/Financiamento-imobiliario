@@ -6,7 +6,6 @@ public class InterfaceUsuario  {
     private Scanner scanner;
 
     //construtor
-
     public InterfaceUsuario() {
         this.scanner = new Scanner(System.in);
     }
@@ -27,7 +26,7 @@ public class InterfaceUsuario  {
                     System.out.println("Valor invalido.... Tente novamente ");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Entrada inválida. Por favor, digite um número para o valor do imóvel.");
+                System.out.println("Por favor, digite um número para o valor do imóvel.");
                 scanner.next();
             }
         } while (!entradaValida);
@@ -100,6 +99,4 @@ public class InterfaceUsuario  {
     public void fecharScanner() {
         scanner.close();
     }
-
-
 }

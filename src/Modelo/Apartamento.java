@@ -59,7 +59,7 @@ public class Apartamento extends Financiamento implements Serializable{
                     this.setVagasGaragem(vagas);
                     entradaValida = true;
                 } else {
-                    System.out.println("Número de vagas inválido. Deve ser um valor que não seja negativo.");
+                    System.out.println("Número de vagas inválido. Por favor, Digite um valor que não seja negativo.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Por favor, digite um número inteiro para as vagas de garagem.");
@@ -76,7 +76,7 @@ public class Apartamento extends Financiamento implements Serializable{
                     this.setAndares(andares);
                     entradaValida = true;
                 } else {
-                    System.out.println("Número de andares inválido. Deve ser um valor que não seja negativo.");
+                    System.out.println("Número de andares inválido. Por favor, Digite um valor que não seja negativo.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Por favor, digite um número inteiro para o número de andares.");
